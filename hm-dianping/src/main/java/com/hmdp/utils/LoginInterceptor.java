@@ -1,9 +1,13 @@
 package com.hmdp.utils;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.hmdp.dto.UserDTO;
+import com.hmdp.entity.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class LoginInterceptor implements HandlerInterceptor {
 
