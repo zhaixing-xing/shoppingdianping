@@ -1,7 +1,7 @@
 package com.hmdp.service;
 
 import com.hmdp.dto.Result;
-import com.hmdp.entity.Shop;
+import com.hmdp.entity.Voucher;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -12,10 +12,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author 虎哥
  * @since 2021-12-22
  */
+public interface IVoucherService extends IService<Voucher> {
 
-public interface IShopService extends IService<Shop> {
+    Result queryVoucherOfShop(Long shopId);
 
-    Result queryById(Long id);
-
-    Result update(Shop shop);
+    void addSeckillVoucher(Voucher voucher);
 }
