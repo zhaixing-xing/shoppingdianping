@@ -88,5 +88,5 @@ public class BlogController {
         List<Blog> records = page.getRecords();
         return Result.ok(records);
     }
-    
+
 }
