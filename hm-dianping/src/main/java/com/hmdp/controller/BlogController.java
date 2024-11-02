@@ -32,6 +32,21 @@ public class BlogController {
     @Resource
     private IUserService userService;
 
+
+
+    //查询博客页面
+    @GetMapping("/{id}")
+    public Result queryBlogById(@PathVariable("id") Long id){
+        Blog blog = blogService.getById(id);
+        if(blog==null){
+            return Result.fail("笔记不存在");
+        }
+        User user = userService.getById(id);
+        blog.setIcon(user.getIcon());
+        blog.setName(user.getNickName());
+        return Result.ok(blog);
+    }
+    //写博文
     @PostMapping
     public Result saveBlog(@RequestBody Blog blog) {
         // 获取登录用户
@@ -42,13 +57,10 @@ public class BlogController {
         // 返回id
         return Result.ok(blog.getId());
     }
-
+    //点赞模块
     @PutMapping("/like/{id}")
     public Result likeBlog(@PathVariable("id") Long id) {
-        // 修改点赞数量
-        blogService.update()
-                .setSql("liked = liked + 1").eq("id", id).update();
-        return Result.ok();
+        return blogService.likeBlog(id);
     }
 
     @GetMapping("/of/me")
