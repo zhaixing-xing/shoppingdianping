@@ -37,14 +37,12 @@ public class BlogController {
     //查询博客页面
     @GetMapping("/{id}")
     public Result queryBlogById(@PathVariable("id") Long id){
-        Blog blog = blogService.getById(id);
-        if(blog==null){
-            return Result.fail("笔记不存在");
-        }
-        User user = userService.getById(id);
-        blog.setIcon(user.getIcon());
-        blog.setName(user.getNickName());
-        return Result.ok(blog);
+        return blogService.queryBlogById(id);
+    }
+    @GetMapping("/hot")
+    public Result queryHotBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
+        // 根据用户查询
+       return blogService.queryHotBlog(current);
     }
     //写博文
     @PostMapping
@@ -62,7 +60,12 @@ public class BlogController {
     public Result likeBlog(@PathVariable("id") Long id) {
         return blogService.likeBlog(id);
     }
+    //点赞列表的查询
+    @GetMapping("/likes/{id}")
+    public Result queryBlogLikes(@PathVariable("id") Long id) {
 
+        return blogService.queryBlogLikes(id);
+    }
     @GetMapping("/of/me")
     public Result queryMyBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
         // 获取登录用户
@@ -75,21 +78,5 @@ public class BlogController {
         return Result.ok(records);
     }
 
-    @GetMapping("/hot")
-    public Result queryHotBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
-        // 根据用户查询
-        Page<Blog> page = blogService.query()
-                .orderByDesc("liked")
-                .page(new Page<>(current, SystemConstants.MAX_PAGE_SIZE));
-        // 获取当前页数据
-        List<Blog> records = page.getRecords();
-        // 查询用户
-        records.forEach(blog ->{
-            Long userId = blog.getUserId();
-            User user = userService.getById(userId);
-            blog.setName(user.getNickName());
-            blog.setIcon(user.getIcon());
-        });
-        return Result.ok(records);
-    }
+
 }
